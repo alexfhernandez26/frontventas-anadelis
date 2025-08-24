@@ -1,38 +1,83 @@
 <div class="row">
-  <div class="col-xxl-5">
-    <div class="row">
-      <div class="col-md-6">
-        <ngx-profit-card></ngx-profit-card>
-      </div>
-      <div class="col-md-6">
-        <ngx-earning-card></ngx-earning-card>
-      </div>
-    </div>
-
-    <ngx-traffic-reveal-card></ngx-traffic-reveal-card>
-  </div>
-
-  <div class="col-xxl-7">
-    <ngx-ecommerce-charts></ngx-ecommerce-charts>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xxl-9">
-    <ngx-country-orders></ngx-country-orders>
-  </div>
-
-  <div class="col-xxl-3">
-    <ngx-progress-section></ngx-progress-section>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xxl-9">
-    <ngx-ecommerce-visitors-analytics></ngx-ecommerce-visitors-analytics>
-  </div>
-
-  <div class="col-xxl-3">
-    <ngx-user-activity></ngx-user-activity>
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>Panel de Comercio Electrónico</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-md-6">
+            <nb-card>
+              <nb-card-header>
+                <h5>Resumen de Ventas</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <div class="text-center">
+                  <h3 class="text-primary">$12,450</h3>
+                  <p>Ventas del mes</p>
+                  <div class="progress">
+                    <div class="progress-bar bg-success" style="width: 75%"></div>
+                  </div>
+                  <small class="text-muted">75% del objetivo</small>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col-md-6">
+            <nb-card>
+              <nb-card-header>
+                <h5>Productos Más Vendidos</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <strong>Producto A:</strong> 45 unidades
+                  </li>
+                  <li class="mb-2">
+                    <strong>Producto B:</strong> 32 unidades
+                  </li>
+                  <li class="mb-2">
+                    <strong>Producto C:</strong> 28 unidades
+                  </li>
+                  <li class="mb-2">
+                    <strong>Producto D:</strong> 22 unidades
+                  </li>
+                </ul>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+        
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <nb-card>
+              <nb-card-header>
+                <h5>Estadísticas Generales</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <div class="row text-center">
+                  <div class="col-md-3">
+                    <h4 class="text-info">156</h4>
+                    <p>Pedidos</p>
+                  </div>
+                  <div class="col-md-3">
+                    <h4 class="text-success">89</h4>
+                    <p>Clientes</p>
+                  </div>
+                  <div class="col-md-3">
+                    <h4 class="text-warning">23</h4>
+                    <p>Productos</p>
+                  </div>
+                  <div class="col-md-3">
+                    <h4 class="text-danger">4.2</h4>
+                    <p>Rating Promedio</p>
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
   </div>
 </div>

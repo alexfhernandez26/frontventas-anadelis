@@ -1,0 +1,235 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>Nueva Factura</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="facturaForm" (ngSubmit)="guardarFactura()">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="numeroFactura">Número de Factura</label>
+                <input 
+                  nbInput 
+                  id="numeroFactura" 
+                  type="text" 
+                  formControlName="numeroFactura" 
+                  placeholder="FAC-001"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="cliente">Cliente</label>
+                <nb-select 
+                  id="cliente" 
+                  formControlName="cliente" 
+                  placeholder="Seleccionar cliente"
+                  fullWidth>
+                  <nb-option *ngFor="let cliente of clientes" [value]="cliente.id">
+                    {{ cliente.nombre }}
+                  </nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input 
+                  nbInput 
+                  id="fecha" 
+                  type="date" 
+                  formControlName="fecha" 
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="formaPago">Forma de Pago</label>
+                <nb-select 
+                  id="formaPago" 
+                  formControlName="formaPago" 
+                  fullWidth>
+                  <nb-option value="efectivo">Efectivo</nb-option>
+                  <nb-option value="tarjeta">Tarjeta</nb-option>
+                  <nb-option value="transferencia">Transferencia</nb-option>
+                </nb-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="observaciones">Observaciones</label>
+                <textarea 
+                  nbInput 
+                  id="observaciones" 
+                  formControlName="observaciones" 
+                  placeholder="Observaciones adicionales"
+                  rows="2"
+                  fullWidth></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <h5>Items de la Factura</h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <nb-select 
+                    placeholder="Seleccionar producto"
+                    [(ngModel)]="selectedProducto"
+                    [ngModelOptions]="{standalone: true}"
+                    fullWidth>
+                    <nb-option *ngFor="let producto of productos" [value]="producto">
+                      {{ producto.nombre }} - ${{ producto.precio }}
+                    </nb-option>
+                  </nb-select>
+                </div>
+                <div class="col-md-6">
+                  <button 
+                    nbButton 
+                    type="button" 
+                    status="primary"
+                    (click)="agregarItem()"
+                    [disabled]="!selectedProducto">
+                    <nb-icon icon="plus-outline"></nb-icon>
+                    Agregar Item
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="itemsFactura.length > 0">
+            <div class="col-md-12">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of itemsFactura">
+                    <td>{{ item.producto }}</td>
+                    <td>
+                      <input 
+                        nbInput 
+                        type="number" 
+                        [(ngModel)]="item.cantidad"
+                        [ngModelOptions]="{standalone: true}"
+                        (ngModelChange)="actualizarSubtotal(item)"
+                        min="1"
+                        style="width: 80px;">
+                    </td>
+                    <td>${{ item.precio | number:'1.2-2' }}</td>
+                    <td>${{ item.subtotal | number:'1.2-2' }}</td>
+                    <td>
+                      <button 
+                        nbButton 
+                        size="small" 
+                        status="danger"
+                        (click)="eliminarItem(item.id)">
+                        <nb-icon icon="trash-2-outline"></nb-icon>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="itemsFactura.length > 0">
+            <div class="col-md-12">
+              <div class="alert alert-info">
+                <strong>Total: ${{ calcularTotal() | number:'1.2-2' }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <button 
+                nbButton 
+                type="submit" 
+                status="primary" 
+                [disabled]="!facturaForm.valid || itemsFactura.length === 0">
+                <nb-icon icon="save-outline"></nb-icon>
+                Guardar Factura
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>Lista de Facturas</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let factura of facturas">
+              <td>{{ factura.numeroFactura }}</td>
+              <td>{{ factura.cliente }}</td>
+              <td>{{ factura.fecha | date:'short' }}</td>
+              <td>${{ factura.total | number:'1.2-2' }}</td>
+              <td>
+                <span class="badge" [ngClass]="'badge-' + getEstadoClass(factura.estado)">
+                  {{ factura.estado }}
+                </span>
+              </td>
+              <td>
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="info"
+                  (click)="generarPDF(factura)">
+                  <nb-icon icon="file-text-outline"></nb-icon>
+                </button>
+                
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="success"
+                  (click)="enviarWhatsApp(factura)">
+                  <nb-icon icon="message-circle-outline"></nb-icon>
+                </button>
+                
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="primary"
+                  (click)="enviarEmail(factura)">
+                  <nb-icon icon="email-outline"></nb-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

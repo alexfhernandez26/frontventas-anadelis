@@ -1,0 +1,174 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>{{ isEditing ? 'Editar Producto' : 'Nuevo Producto' }}</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="productoForm" (ngSubmit)="guardarProducto()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="nombre">Nombre del Producto</label>
+                <input 
+                  nbInput 
+                  id="nombre" 
+                  type="text" 
+                  formControlName="nombre" 
+                  placeholder="Nombre del producto"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="codigo">Código</label>
+                <input 
+                  nbInput 
+                  id="codigo" 
+                  type="text" 
+                  formControlName="codigo" 
+                  placeholder="Código del producto"
+                  fullWidth>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea 
+                  nbInput 
+                  id="descripcion" 
+                  formControlName="descripcion" 
+                  placeholder="Descripción del producto"
+                  rows="3"
+                  fullWidth></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="precio">Precio</label>
+                <input 
+                  nbInput 
+                  id="precio" 
+                  type="number" 
+                  formControlName="precio" 
+                  placeholder="Precio"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="stock">Stock</label>
+                <input 
+                  nbInput 
+                  id="stock" 
+                  type="number" 
+                  formControlName="stock" 
+                  placeholder="Stock disponible"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="categoria">Categoría</label>
+                <input 
+                  nbInput 
+                  id="categoria" 
+                  type="text" 
+                  formControlName="categoria" 
+                  placeholder="Categoría"
+                  fullWidth>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <button 
+                nbButton 
+                type="submit" 
+                status="primary" 
+                [disabled]="!productoForm.valid">
+                <nb-icon icon="save-outline"></nb-icon>
+                {{ isEditing ? 'Actualizar' : 'Guardar' }} Producto
+              </button>
+              
+              <button 
+                *ngIf="isEditing"
+                nbButton 
+                type="button" 
+                status="basic"
+                (click)="cancelarEdicion()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>Lista de Productos</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Estado</th>
+              <th>Categoría</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of productos">
+              <td>{{ producto.codigo }}</td>
+              <td>{{ producto.nombre }}</td>
+              <td>{{ producto.descripcion }}</td>
+              <td>${{ producto.precio | number:'1.2-2' }}</td>
+              <td>{{ producto.stock }}</td>
+              <td>
+                <span class="badge" [ngClass]="'badge-' + getStockStatusClass(producto.stock)">
+                  {{ getStockStatus(producto.stock) }}
+                </span>
+              </td>
+              <td>{{ producto.categoria }}</td>
+              <td>
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="info"
+                  (click)="editarProducto(producto)">
+                  <nb-icon icon="edit-outline"></nb-icon>
+                </button>
+                
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="danger"
+                  (click)="eliminarProducto(producto.id)">
+                  <nb-icon icon="trash-2-outline"></nb-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

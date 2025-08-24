@@ -1,0 +1,234 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>{{ isEditing ? 'Editar Inventario' : 'Nuevo Registro de Inventario' }}</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="inventarioForm" (ngSubmit)="guardarInventario()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="producto">Producto</label>
+                <nb-select 
+                  id="producto" 
+                  formControlName="producto" 
+                  placeholder="Seleccionar producto"
+                  fullWidth>
+                  <nb-option *ngFor="let producto of productos" [value]="producto.id">
+                    {{ producto.nombre }}
+                  </nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="proveedor">Proveedor</label>
+                <input 
+                  nbInput 
+                  id="proveedor" 
+                  type="text" 
+                  formControlName="proveedor" 
+                  placeholder="Nombre del proveedor"
+                  fullWidth>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="stockMinimo">Stock Mínimo</label>
+                <input 
+                  nbInput 
+                  id="stockMinimo" 
+                  type="number" 
+                  formControlName="stockMinimo" 
+                  placeholder="Stock mínimo"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="stockMaximo">Stock Máximo</label>
+                <input 
+                  nbInput 
+                  id="stockMaximo" 
+                  type="number" 
+                  formControlName="stockMaximo" 
+                  placeholder="Stock máximo"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="costoUnitario">Costo Unitario</label>
+                <input 
+                  nbInput 
+                  id="costoUnitario" 
+                  type="number" 
+                  formControlName="costoUnitario" 
+                  placeholder="Costo por unidad"
+                  fullWidth>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="ubicacion">Ubicación</label>
+                <input 
+                  nbInput 
+                  id="ubicacion" 
+                  type="text" 
+                  formControlName="ubicacion" 
+                  placeholder="Ubicación en almacén"
+                  fullWidth>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <button 
+                nbButton 
+                type="submit" 
+                status="primary" 
+                [disabled]="!inventarioForm.valid">
+                <nb-icon icon="save-outline"></nb-icon>
+                {{ isEditing ? 'Actualizar' : 'Guardar' }} Inventario
+              </button>
+              
+              <button 
+                *ngIf="isEditing"
+                nbButton 
+                type="button" 
+                status="basic"
+                (click)="cancelarEdicion()">
+                <nb-icon icon="close-outline"></nb-icon>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>Control de Inventario</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Stock Actual</th>
+              <th>Stock Mínimo</th>
+              <th>Stock Máximo</th>
+              <th>Estado</th>
+              <th>Progreso</th>
+              <th>Ubicación</th>
+              <th>Valor Total</th>
+              <th>Última Actualización</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let inventario of inventarios">
+              <td>{{ inventario.producto }}</td>
+              <td>{{ inventario.stockActual }}</td>
+              <td>{{ inventario.stockMinimo }}</td>
+              <td>{{ inventario.stockMaximo }}</td>
+              <td>
+                <span class="badge" [ngClass]="'badge-' + getStockStatusClass(inventario)">
+                  {{ getStockStatus(inventario) }}
+                </span>
+              </td>
+              <td>
+                <nb-progress-bar 
+                  [value]="getStockPercentage(inventario)"
+                  [status]="getStockStatusClass(inventario)">
+                </nb-progress-bar>
+              </td>
+              <td>{{ inventario.ubicacion }}</td>
+              <td>${{ getValorTotal(inventario) | number:'1.2-2' }}</td>
+              <td>{{ inventario.ultimaActualizacion | date:'short' }}</td>
+              <td>
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="success"
+                  (click)="ajustarStock(inventario, 10)">
+                  <nb-icon icon="plus-outline"></nb-icon>
+                </button>
+                
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="warning"
+                  (click)="ajustarStock(inventario, -5)">
+                  <nb-icon icon="minus-outline"></nb-icon>
+                </button>
+                
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="info"
+                  (click)="editarInventario(inventario)">
+                  <nb-icon icon="edit-outline"></nb-icon>
+                </button>
+                
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="danger"
+                  (click)="eliminarInventario(inventario.id)">
+                  <nb-icon icon="trash-2-outline"></nb-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4">
+    <nb-card>
+      <nb-card-header>
+        <h5>Resumen de Inventario</h5>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="summary-item">
+          <strong>Total de Productos:</strong> {{ inventarios.length }}
+        </div>
+        <div class="summary-item">
+          <strong>Stock Crítico:</strong> 
+          <span class="text-danger">
+            {{ getStockCriticoCount() }}
+          </span>
+        </div>
+        <div class="summary-item">
+          <strong>Stock Bajo:</strong> 
+          <span class="text-warning">
+            {{ getStockBajoCount() }}
+          </span>
+        </div>
+        <div class="summary-item">
+          <strong>Valor Total:</strong> 
+          <span class="text-success">
+            ${{ getValorTotalInventario() | number:'1.2-2' }}
+          </span>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

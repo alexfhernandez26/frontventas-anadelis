@@ -1,0 +1,159 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>Nueva Venta</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="ventaForm" (ngSubmit)="guardarVenta()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="cliente">Cliente</label>
+                <nb-select 
+                  id="cliente" 
+                  formControlName="cliente" 
+                  placeholder="Seleccionar cliente"
+                  fullWidth>
+                  <nb-option *ngFor="let cliente of clientes" [value]="cliente.id">
+                    {{ cliente.nombre }}
+                  </nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="producto">Producto</label>
+                <nb-select 
+                  id="producto" 
+                  formControlName="producto" 
+                  placeholder="Seleccionar producto"
+                  (selectedChange)="onProductoChange($event)"
+                  fullWidth>
+                  <nb-option *ngFor="let producto of productos" [value]="producto.id">
+                    {{ producto.nombre }} - ${{ producto.precio }}
+                  </nb-option>
+                </nb-select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="cantidad">Cantidad</label>
+                <input 
+                  nbInput 
+                  id="cantidad" 
+                  type="number" 
+                  formControlName="cantidad" 
+                  placeholder="Cantidad"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="precio">Precio Unitario</label>
+                <input 
+                  nbInput 
+                  id="precio" 
+                  type="number" 
+                  formControlName="precio" 
+                  placeholder="Precio"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="descuento">Descuento (%)</label>
+                <input 
+                  nbInput 
+                  id="descuento" 
+                  type="number" 
+                  formControlName="descuento" 
+                  placeholder="Descuento"
+                  fullWidth>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="fecha">Fecha</label>
+                <input 
+                  nbInput 
+                  id="fecha" 
+                  type="date" 
+                  formControlName="fecha" 
+                  fullWidth>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="alert alert-info">
+                <strong>Total: ${{ calcularTotal() | number:'1.2-2' }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <button 
+                nbButton 
+                type="submit" 
+                status="primary" 
+                [disabled]="!ventaForm.valid">
+                <nb-icon icon="save-outline"></nb-icon>
+                Guardar Venta
+              </button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>Historial de Ventas</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Total</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let venta of ventas">
+              <td>{{ venta.id }}</td>
+              <td>{{ venta.cliente }}</td>
+              <td>{{ venta.producto }}</td>
+              <td>{{ venta.cantidad }}</td>
+              <td>${{ venta.total | number:'1.2-2' }}</td>
+              <td>{{ venta.fecha | date:'short' }}</td>
+              <td>
+                <button 
+                  nbButton 
+                  size="small" 
+                  status="danger"
+                  (click)="eliminarVenta(venta.id)">
+                  <nb-icon icon="trash-2-outline"></nb-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

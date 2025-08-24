@@ -1,42 +1,110 @@
 <div class="row">
-  <div class="col-xxxl-3 col-md-6" *ngFor="let statusCard of statusCards">
-    <ngx-status-card [title]="statusCard.title" [type]="statusCard.type">
-      <i [ngClass]="statusCard.iconClass"></i>
-    </ngx-status-card>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
-    <ngx-temperature></ngx-temperature>
-  </div>
-
-  <div class="col-xxxl-9 col-xxl-8 col-lg-7 col-md-6">
-    <ngx-electricity></ngx-electricity>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xxxl-9 col-xl-12">
-    <ngx-rooms></ngx-rooms>
-  </div>
-
-  <div class="col-xxxl-3 col-xxl-4 col-lg-7 col-md-6">
-    <ngx-contacts></ngx-contacts>
-  </div>
-
-  <div class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
-    <ngx-solar [chartValue]="solarValue"></ngx-solar>
-
-    <ngx-kitten></ngx-kitten>
-  </div>
-
-  <div class="col-xxxl-3 col-xxl-4 col-md-5">
-    <ngx-traffic></ngx-traffic>
-    <ngx-weather></ngx-weather>
-  </div>
-
-  <div class="col-xxxl-6 col-xxl-12 col-md-7">
-    <ngx-security-cameras></ngx-security-cameras>
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>
+        <h4>Dashboard del Sistema de Ventas</h4>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-md-3">
+            <nb-card>
+              <nb-card-body>
+                <div class="text-center">
+                  <h5>Ventas del Día</h5>
+                  <h2 class="text-primary">$1,250</h2>
+                  <p class="text-success">+15% vs ayer</p>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col-md-3">
+            <nb-card>
+              <nb-card-body>
+                <div class="text-center">
+                  <h5>Productos</h5>
+                  <h2 class="text-info">45</h2>
+                  <p class="text-warning">3 con stock bajo</p>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col-md-3">
+            <nb-card>
+              <nb-card-body>
+                <div class="text-center">
+                  <h5>Clientes</h5>
+                  <h2 class="text-success">128</h2>
+                  <p class="text-info">+5 este mes</p>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col-md-3">
+            <nb-card>
+              <nb-card-body>
+                <div class="text-center">
+                  <h5>Facturas</h5>
+                  <h2 class="text-warning">23</h2>
+                  <p class="text-danger">2 pendientes</p>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+        
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <nb-card>
+              <nb-card-header>
+                <h5>Actividad Reciente</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <strong>Nueva venta:</strong> Producto A - $150
+                  </li>
+                  <li class="mb-2">
+                    <strong>Cliente registrado:</strong> Juan Pérez
+                  </li>
+                  <li class="mb-2">
+                    <strong>Factura generada:</strong> FAC-001
+                  </li>
+                  <li class="mb-2">
+                    <strong>Stock actualizado:</strong> Producto B
+                  </li>
+                </ul>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col-md-6">
+            <nb-card>
+              <nb-card-header>
+                <h5>Acciones Rápidas</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <div class="d-grid gap-2">
+                  <button nbButton status="primary" class="mb-2">
+                    <nb-icon icon="plus-outline"></nb-icon>
+                    Nueva Venta
+                  </button>
+                  <button nbButton status="info" class="mb-2">
+                    <nb-icon icon="cube-outline"></nb-icon>
+                    Agregar Producto
+                  </button>
+                  <button nbButton status="success" class="mb-2">
+                    <nb-icon icon="people-outline"></nb-icon>
+                    Nuevo Cliente
+                  </button>
+                  <button nbButton status="warning">
+                    <nb-icon icon="file-text-outline"></nb-icon>
+                    Generar Factura
+                  </button>
+                </div>
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
   </div>
 </div>
